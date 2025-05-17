@@ -87,6 +87,6 @@ make clean
 - [AWS DynamoDB Guides - Everything you need to know about DynamoDB](https://www.youtube.com/playlist?list=PL9nWRykSBSFi5QD8ssI0W5odL9S0309E2)
 - [AWS re:Invent 2018: Amazon DynamoDB Deep Dive: Advanced Design Patterns for DynamoDB (DAT401)](https://www.youtube.com/watch?v=HaEPXoXVf2k)
 - [AWS re:Invent 2021 - DynamoDB deep dive: Advanced design patterns](https://www.youtube.com/watch?v=xfxBhvGpoa0)
-- (Common Single-Table design modeling mistakes with DynamoDB)[https://www.youtube.com/watch?v=XMEkNZby95M]
+- [Common Single-Table design modeling mistakes with DynamoDB](https://www.youtube.com/watch?v=XMEkNZby95M)
 - [Single-Table Design with DynamoDB - Alex DeBrie, AWS Data Hero](https://www.youtube.com/watch?v=BnDKD_Zv0og)
 - [Deploying DynamoDB locally on your computer](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)

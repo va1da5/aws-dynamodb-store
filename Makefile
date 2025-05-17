@@ -40,4 +40,7 @@ watch:
             fi; \
         fi
 
+dynamo-ui:
+	pnpx dynamodb-admin -p 3000 -o --dynamo-endpoint http://localhost:8000
+
 .PHONY: all build run test clean watch

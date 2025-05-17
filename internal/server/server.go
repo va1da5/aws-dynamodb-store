@@ -1,23 +1,27 @@
 package server
 
 import (
+	"aws-dynamodb-store/internal/config"
+	"aws-dynamodb-store/internal/repository"
+	"aws-dynamodb-store/internal/service"
 	"fmt"
 	"net/http"
-	"os"
-	"strconv"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
 )
 
 type Server struct {
-	port int
+	port       int
+	repository repository.Repository
+	service    *service.Service
 }
 
-func NewServer() *http.Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
+func NewServer(cfg config.AppConfig, repository repository.Repository, service *service.Service) *http.Server {
 	NewServer := &Server{
-		port: port,
+		port:       cfg.ServerPort,
+		repository: repository,
+		service:    service,
 	}
 
 	// Declare Server config

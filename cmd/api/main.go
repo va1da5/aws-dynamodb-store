@@ -9,7 +9,11 @@ import (
 	"syscall"
 	"time"
 
+	"aws-dynamodb-store/internal/config"
 	"aws-dynamodb-store/internal/server"
+	"aws-dynamodb-store/internal/service"
+
+	dynamodbrepo "aws-dynamodb-store/internal/repository/dynamodb"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
@@ -38,7 +42,26 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 
 func main() {
 
-	server := server.NewServer()
+	appCfg, err := config.LoadConfig()
+
+	if err != nil {
+		log.Fatalf("Failed to load configuration: %v", err)
+	}
+
+	log.Printf("Log level set to: %s", appCfg.LogLevel)
+	log.Printf("Server starting on port: %d", appCfg.ServerPort)
+	log.Printf("Using DynamoDB table: %s in region: %s", appCfg.DynamoDB.TableName, appCfg.DynamoDB.AWSRegion)
+	if appCfg.DynamoDB.UseDynamoDBLocal {
+		log.Printf("Connecting to DynamoDB Local at: %s", appCfg.DynamoDB.DynamoDBLocalURL)
+	}
+
+	repository := dynamodbrepo.NewDynamoDBRepository(appCfg.DynamoDB)
+
+	services := &service.Service{
+		RBACService: service.NewRBACService(repository),
+	}
+
+	server := server.NewServer(*appCfg, repository, services)
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
@@ -46,7 +69,7 @@ func main() {
 	// Run graceful shutdown in a separate goroutine
 	go gracefulShutdown(server, done)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
 	}
